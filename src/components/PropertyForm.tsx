@@ -57,6 +57,7 @@ const propertySchema = z.object({
   features: z.string().optional().default(""),
   extraInfo: z.string().optional().default(""),
   clientName: z.string().optional().default(""),
+  tone: z.enum(["بيعي", "مهني", "عائلي", "استثماري"]).optional().default("بيعي"),
 });
 
 const PROPERTY_TYPES = ["شقة", "فيلا", "أرض", "تجاري", "دور", "استراحة"] as const;
@@ -91,19 +92,22 @@ export default function PropertyForm() {
       features: "",
       extraInfo: "",
       clientName: "",
+      tone: "بيعي",
     },
   });
 
   const ageUnit = watch("ageUnit");
+  const tone = watch("tone");
+
+  const TONES = [
+    { value: "بيعي", label: "🏷️ بيعي", desc: "لغة تسويقية عاطفية" },
+    { value: "مهني", label: "💼 مهني", desc: "موضوعي ودقيق" },
+    { value: "عائلي", label: "👨‍👩‍👧‍👦 عائلي", desc: "دافئ ومريح" },
+    { value: "استثماري", label: "📈 استثماري", desc: "عائد ونمو" },
+  ];
 
   const onSubmit = async (data: PropertyFormData) => {
     setApiError(null);
-    const settings = getSettings();
-
-    // في حال ما فيه API Key — يشتغل بالوضع التجريبي تلقائيًا
-    if (!settings.apiKey) {
-      console.log("🧪 الوضع التجريبي — بدون API Key");
-    }
 
     if (images.length === 0) {
       setApiError("⚠️ الرجاء رفع صورة واحدة على الأقل للعقار.");
@@ -116,8 +120,6 @@ export default function PropertyForm() {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
-          "x-api-key": settings.apiKey,
-          "x-model": settings.model,
         },
         body: JSON.stringify(data),
       });
@@ -339,11 +341,38 @@ export default function PropertyForm() {
         </div>
       </section>
 
-      {/* القسم 3: السعر والمميزات */}
+      {/* القسم 3: النبرة والمميزات */}
       <section className="space-y-4 rounded-xl border bg-white p-6">
         <h2 className="flex items-center gap-2 text-lg font-semibold text-gray-800">
-          ✨ المميزات والتفاصيل
+          ✨ النبرة والمميزات
         </h2>
+
+        {/* نبرة الوصف */}
+        <div className="space-y-2">
+          <Label>نبرة الوصف</Label>
+          <div className="grid grid-cols-2 gap-2 sm:grid-cols-4">
+            {TONES.map((t) => (
+              <label
+                key={t.value}
+                className={`flex cursor-pointer flex-col items-center gap-1 rounded-lg border-2 p-3 text-center transition-all ${
+                  tone === t.value
+                    ? "border-indigo-600 bg-indigo-50"
+                    : "border-gray-200 hover:border-gray-300"
+                }`}
+              >
+                <input
+                  type="radio"
+                  value={t.value}
+                  {...register("tone")}
+                  className="sr-only"
+                  defaultChecked={t.value === "بيعي"}
+                />
+                <span className="text-sm font-medium">{t.label}</span>
+                <span className="text-xs text-gray-400">{t.desc}</span>
+              </label>
+            ))}
+          </div>
+        </div>
 
         <div className="space-y-1.5">
           <Label htmlFor="features">المميزات</Label>

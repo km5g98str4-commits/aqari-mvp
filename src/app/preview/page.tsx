@@ -95,13 +95,21 @@ export default function PreviewPage() {
       <Separator className="mb-8" />
 
       {/* الكارد */}
-      <div className="flex justify-center">
+      <div className="flex flex-col items-center gap-3">
         <PreviewCard
           ref={previewRef}
           propertyData={propertyData}
           generatedContent={generatedContent}
           images={images}
         />
+        {/* مزود الخدمة */}
+        {generatedContent._provider && (
+          <span className="rounded-full bg-gray-100 px-3 py-1 text-xs text-gray-400">
+            {generatedContent._provider === "deepseek" && "⚡ بواسطة DeepSeek"}
+            {generatedContent._provider === "openai" && "🤖 بواسطة OpenAI"}
+            {generatedContent._provider === "demo" && "🧪 الوضع التجريبي"}
+          </span>
+        )}
       </div>
     </div>
   );

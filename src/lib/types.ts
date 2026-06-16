@@ -30,6 +30,8 @@ export interface PropertyFormData {
   extraInfo: string;
   /** اسم العميل أو المكتب (اختياري) */
   clientName: string;
+  /** نبرة الوصف */
+  tone?: string;
 }
 
 export interface GeneratedContent {
@@ -41,12 +43,12 @@ export interface GeneratedContent {
   highlights: string[];
   /** دعوة للتواصل */
   cta: string;
+  /** مزود الخدمة المستخدم */
+  _provider?: 'deepseek' | 'openai' | 'demo';
 }
 
 export interface AppSettings {
-  /** مفتاح OpenAI API */
-  apiKey: string;
-  /** النموذج المستخدم */
+  /** النموذج المستخدم (للوضع اليدوي) */
   model: 'gpt-4o' | 'gpt-4o-mini';
   /** اسم المستخدم أو المكتب للعرض */
   userDisplayName: string;
@@ -54,7 +56,6 @@ export interface AppSettings {
 
 /** القيم الافتراضية للإعدادات */
 export const DEFAULT_SETTINGS: AppSettings = {
-  apiKey: '',
   model: 'gpt-4o-mini',
   userDisplayName: '',
 };
