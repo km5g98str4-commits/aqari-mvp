@@ -2,10 +2,10 @@
 
 import { useRouter } from "next/navigation";
 import { useRef, useState } from "react";
-import { ArrowRight, Copy, Check, PenLine, Plus } from "lucide-react";
+import { ArrowRight, Copy, Check, PenLine, Plus, Share2, Send } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Separator } from "@/components/ui/separator";
-import PreviewCard from "@/components/PreviewCard";
+import PreviewCard, { ShareSection } from "@/components/PreviewCard";
 import DownloadButton from "@/components/DownloadButton";
 import { getFormData, getGeneratedContent, getImages, clearFormData } from "@/lib/store";
 import { toast } from "sonner";
@@ -54,42 +54,54 @@ export default function PreviewPage() {
   return (
     <div className="mx-auto max-w-3xl px-4 py-8">
       {/* أزرار الإجراءات */}
-      <div className="mb-6 flex flex-wrap items-center justify-center gap-3">
-        <DownloadButton targetRef={previewRef} />
+      <div className="mb-6 space-y-3">
+        {/* الصف الأول: التنزيل والنسخ */}
+        <div className="flex flex-wrap items-center justify-center gap-3">
+          <DownloadButton targetRef={previewRef} />
 
-        <Button
-          onClick={handleCopy}
-          variant="outline"
-          size="lg"
-          className="gap-2"
-        >
-          {copied ? (
-            <Check className="h-5 w-5 text-green-600" />
-          ) : (
-            <Copy className="h-5 w-5" />
-          )}
-          {copied ? "تم النسخ" : "نسخ الوصف"}
-        </Button>
+          <Button
+            onClick={handleCopy}
+            variant="outline"
+            size="lg"
+            className="gap-2"
+          >
+            {copied ? (
+              <Check className="h-5 w-5 text-green-600" />
+            ) : (
+              <Copy className="h-5 w-5" />
+            )}
+            {copied ? "تم النسخ" : "نسخ الوصف"}
+          </Button>
 
-        <Button
-          onClick={() => router.push("/")}
-          variant="outline"
-          size="lg"
-          className="gap-2"
-        >
-          <PenLine className="h-4 w-4" />
-          تعديل
-        </Button>
+          <Button
+            onClick={() => router.push("/")}
+            variant="outline"
+            size="lg"
+            className="gap-2"
+          >
+            <PenLine className="h-4 w-4" />
+            تعديل
+          </Button>
 
-        <Button
-          onClick={handleNew}
-          variant="ghost"
-          size="lg"
-          className="gap-2"
-        >
-          <Plus className="h-4 w-4" />
-          عرض جديد
-        </Button>
+          <Button
+            onClick={handleNew}
+            variant="ghost"
+            size="lg"
+            className="gap-2"
+          >
+            <Plus className="h-4 w-4" />
+            عرض جديد
+          </Button>
+        </div>
+
+        {/* الصف الثاني: مشاركة سريعة */}
+        <div className="flex items-center justify-center">
+          <ShareSection
+            propertyData={propertyData}
+            generatedContent={generatedContent}
+            images={images}
+          />
+        </div>
       </div>
 
       <Separator className="mb-8" />
