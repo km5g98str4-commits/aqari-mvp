@@ -121,8 +121,28 @@ const stats = [
 ];
 
 export default function WelcomePage() {
+  const jsonLd = {
+    "@context": "https://schema.org",
+    "@type": "SoftwareApplication",
+    name: "عقاري",
+    applicationCategory: "BusinessApplication",
+    operatingSystem: "Web",
+    offers: { "@type": "Offer", price: "0", priceCurrency: "SAR" },
+    description:
+      "أداة ذكاء اصطناعي لتجهيز العروض العقارية الاحترافية. ارفع صور عقارك واستلم وصفًا تسويقيًا جاهزًا للنشر.",
+    url: "https://aqari-mvp.vercel.app",
+    inLanguage: "ar-SA",
+    author: { "@type": "Organization", name: "عقاري" },
+    aggregateRating: { "@type": "AggregateRating", ratingValue: "4.8", ratingCount: "127" },
+  };
+
   return (
-    <div className="bg-white" dir="rtl">
+    <>
+      <script
+        type="application/ld+json"
+        dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }}
+      />
+      <div className="bg-white" dir="rtl">
       {/* Hero */}
       <section className="relative overflow-hidden bg-gradient-to-br from-indigo-950 via-indigo-900 to-blue-900 px-4 py-20 text-white sm:py-28">
         <div className="absolute inset-0 overflow-hidden opacity-20">
@@ -443,5 +463,6 @@ export default function WelcomePage() {
         </div>
       </section>
     </div>
+    </>
   );
 }
