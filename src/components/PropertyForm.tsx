@@ -131,6 +131,22 @@ export default function PropertyForm() {
 
       const content: GeneratedContent = await res.json();
 
+      // Track: generation event
+      fetch("/api/track", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({
+          event: "generate",
+          meta: {
+            type: data.type,
+            purpose: data.purpose,
+            city: data.city,
+            provider: content._provider,
+            tone: data.tone,
+          },
+        }),
+      }).catch(() => {});
+
       // حفظ البيانات في localStorage
       saveFormData(data);
       saveImages(images);

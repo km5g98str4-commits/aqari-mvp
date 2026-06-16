@@ -3,6 +3,7 @@
 import { forwardRef } from "react";
 import { Check, MapPin, Bed, Bath, Sofa, Maximize, Calendar } from "lucide-react";
 import type { GeneratedContent, PropertyFormData } from "@/lib/types";
+import ImageGallery from "./ImageGallery";
 
 interface PreviewCardProps {
   propertyData: PropertyFormData;
@@ -12,7 +13,6 @@ interface PreviewCardProps {
 
 const PreviewCard = forwardRef<HTMLDivElement, PreviewCardProps>(
   ({ propertyData, generatedContent, images }, ref) => {
-    const mainImage = images[0] || "";
     const ageText =
       propertyData.ageUnit === "جديد"
         ? "جديد"
@@ -20,27 +20,26 @@ const PreviewCard = forwardRef<HTMLDivElement, PreviewCardProps>(
 
     return (
       <div ref={ref} className="w-full max-w-[600px] overflow-hidden rounded-2xl border bg-white shadow-xl">
-        {/* صورة رئيسية مع السعر */}
-        <div className="relative h-[350px] w-full overflow-hidden bg-gray-200">
-          {mainImage ? (
-            <img
-              src={mainImage}
-              alt={generatedContent.title}
-              className="h-full w-full object-cover"
-              crossOrigin="anonymous"
-            />
-          ) : (
-            <div className="flex h-full items-center justify-center text-gray-400">
-              لا توجد صورة
+        {/* معرض الصور */}
+        <ImageGallery images={images} alt={generatedContent.title} />
+
+        {/* تراكب السعر - يظهر داخل معرض الصور */}
+        {images.length > 0 && (
+          <div className="relative -mt-20 z-10 px-6">
+            <div className="inline-block rounded-lg bg-white/95 backdrop-blur-sm shadow-lg px-4 py-2">
+              <p className="text-xl font-bold text-[#1e3a5f]">
+                {Number(propertyData.price).toLocaleString("ar-SA")} ريال
+              </p>
             </div>
-          )}
-          {/* تراكب السعر */}
-          <div className="absolute inset-x-0 bottom-0 bg-gradient-to-t from-black/70 to-transparent p-6 pt-16">
-            <p className="text-3xl font-bold text-white drop-shadow-lg">
-              {Number(propertyData.price).toLocaleString("ar-SA")} ريال
-            </p>
           </div>
-        </div>
+        )}
+
+        {/* لا صورة */}
+        {images.length === 0 && (
+          <div className="flex h-56 items-center justify-center rounded-t-2xl bg-gray-200">
+            <span className="text-gray-400">لا توجد صورة</span>
+          </div>
+        )}
 
         {/* المحتوى */}
         <div className="space-y-5 p-6">

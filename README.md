@@ -1,36 +1,100 @@
-This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
+# عقاري — Aqari MVP 🏠
 
-## Getting Started
+AI-powered Saudi real estate marketing description generator. Paste property details, get professional Arabic/English descriptions optimized for the Saudi market.
 
-First, run the development server:
+## Features
+
+- **AI Description Generator** — Turn raw property specs into polished real estate listings
+- **Bilingual Arabic/English** — Generates professional descriptions in both languages
+- **Sector-Specific Templates** — Tailored for Saudi real estate (Aqar, Bayut, Property Finder)
+- **Preview & Download** — View formatted output, copy to clipboard
+- **Settings Panel** — Control tone, language, and output format
+- **Smart Degradation** — DeepSeek → OpenAI → Demo (works without any API keys)
+
+## Tech Stack
+
+- **Framework:** Next.js 16 (App Router, Turbopack)
+- **Language:** TypeScript
+- **Styling:** Tailwind CSS
+- **AI:** DeepSeek (primary), OpenAI (fallback)
+- **Runtime:** Edge
+
+## Quick Start
 
 ```bash
+# 1. Install dependencies
+npm install
+
+# 2. Copy environment file
+cp .env.example .env.local
+
+# 3. Run dev server
 npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
+# → http://localhost:3000
 ```
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+## Local Development
 
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
+```bash
+npm run dev        # Dev server
+npm run build      # Production build
+npm run start      # Start production
+```
 
-This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
+## 🧪 Demo Mode
 
-## Learn More
+عقاري works fully without any API keys. Simply run `npm run dev` and use the app:
 
-To learn more about Next.js, take a look at the following resources:
+- The generator returns high-quality Arabic mock descriptions
+- All UI features are functional (settings, preview, copy)
+- No external services required for development/testing
 
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
+Add `DEEPSEEK_API_KEY` or `OPENAI_API_KEY` for live AI generation.
 
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js) - your feedback and contributions are welcome!
+## Environment Variables
 
-## Deploy on Vercel
+| Variable | Required | Description |
+|---|---|---|
+| `DEEPSEEK_API_KEY` | No | DeepSeek API key (primary AI provider) |
+| `OPENAI_API_KEY` | No | OpenAI fallback if DeepSeek unavailable |
 
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
+## Project Structure
 
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
+```
+src/
+├── app/
+│   ├── api/
+│   │   └── generate/     # AI generation endpoint
+│   ├── preview/          # Generated content preview
+│   ├── settings/         # User preferences
+│   ├── layout.tsx        # Root layout
+│   └── page.tsx          # Main page (property input form)
+├── components/           # React components
+└── lib/
+    └── prompts.ts        # AI prompt templates (Saudi real estate)
+```
+
+## Deployment
+
+### Vercel
+
+```bash
+vercel
+```
+
+No additional configuration needed beyond setting API keys in the Vercel dashboard.
+
+## Known Limitations
+
+- PDF output is client-side only (print-to-PDF)
+- No image upload for properties
+- No user accounts or history
+- Single-use generation (no batch processing)
+
+## License
+
+Private — All rights reserved.
+
+---
+
+Built with ❤️ for the Saudi real estate market 🇸🇦
